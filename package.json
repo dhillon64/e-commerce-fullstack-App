@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "ecommerce app",
   "main": "server.js",
+  "type": "module",
   "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "project": "concurrently \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +22,11 @@
   },
   "homepage": "https://github.com/dhillon64/e-commerce-app#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }
