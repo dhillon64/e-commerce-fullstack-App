@@ -1,3 +1,10 @@
+body {
+  background-image: url("./15803400-illustration-of-different-shopping-bag-on-sale-background.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
 main {
   min-height: 80vh;
 }
