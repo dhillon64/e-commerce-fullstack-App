@@ -1,24 +1,36 @@
 import express from "express";
 import dotenv from "dotenv";
-import products from "./data/products.js";
+import colors from "colors";
+import connectDB from "./config/db.js";
+import productRoutes from "../backend/routes/productRoutes.js";
+import HttpError from "./middleware/http.error.js";
 
 dotenv.config();
 
+connectDB();
+
 const app = express();
 
-app.get("/api/products", (req, res, next) => {
-  res.json(products);
+app.use("/api/products", productRoutes);
+
+app.use((req, res, next) => {
+  const error = new HttpError("could not find route", 404);
+  throw error;
 });
 
-app.get("/api/products/:pid", (req, res, next) => {
-  const id = req.params.pid;
-  const product = products.find((product) => product._id === id);
-  res.json(product);
+app.use((error, req, res, next) => {
+  if (res.headerSent) {
+    return next(error);
+  }
+  res.status(error.code || 500);
+  res.json({ message: error.message || "an unknown error occured!" });
 });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(
   PORT,
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+  console.log(
+    `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
+  )
 );
