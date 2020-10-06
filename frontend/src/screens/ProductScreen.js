@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProduct } from "../actions";
+import { addToCart, fetchProduct } from "../actions";
 import Loader from "../components/Loader";
 
 const ProductScreen = () => {
@@ -28,7 +28,8 @@ const ProductScreen = () => {
   }, [dispatch, id]);
 
   const addToCartHandler = () => {
-    history.push(`./cart/${id}?qty=${qty}`);
+    dispatch(addToCart(id, qty));
+    history.push("/cart");
   };
 
   return (

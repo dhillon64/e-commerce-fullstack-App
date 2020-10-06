@@ -17,6 +17,15 @@ export default (state = { cartItems: [] }, action) => {
           cartItems: [...state.cartItems, item],
         };
       }
+
+    case "REMOVE_FROM_CART":
+      return {
+        ...state,
+        cartItems: [
+          ...state.cartItems.filter((item) => item.product !== action.payload),
+        ],
+      };
+
     default:
       return state;
   }
