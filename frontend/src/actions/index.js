@@ -53,3 +53,29 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
+
+export const LogIn = (formValues) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "LOGIN_REQUEST",
+      });
+
+      const response = await axios.post("/api/users/login", formValues);
+
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: response.data,
+      });
+      localStorage.setItem("user", JSON.stringify(response.data));
+    } catch (error) {
+      dispatch({
+        type: "LOGIN_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
