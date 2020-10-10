@@ -67,7 +67,7 @@ export const LogIn = (formValues) => {
         type: "LOGIN_SUCCESS",
         payload: response.data,
       });
-      localStorage.setItem("user", JSON.stringify(response.data));
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
     } catch (error) {
       dispatch({
         type: "LOGIN_FAIL",
@@ -79,3 +79,41 @@ export const LogIn = (formValues) => {
     }
   };
 };
+
+export const logOut=()=>{
+  localStorage.removeItem("userInfo");
+  return{
+    type:"LOGOUT"
+  }
+}
+
+export const register=(formValues)=>{
+  return async (dispatch)=>{
+    try{
+    dispatch({
+      type:"REGISTER_REQUEST"
+    })
+
+    const response=await axios.post('/api/users',formValues);
+
+    dispatch({
+      type:"REGISTER_SUCCESS",
+      payload:response.data
+    })
+
+    dispatch({
+      type:"LOGIN_SUCCESS",
+      payload:response.data
+    })
+    localStorage.setItem("userInfo", JSON.stringify(response.data));
+
+  }
+  catch(error){
+    dispatch({
+      type:'REGISTER_FAIL',
+      payload:error.response&& error.response.data.message
+      ? error.response.data.message :error.message
+    })
+  }
+  }
+}
