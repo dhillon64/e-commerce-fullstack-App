@@ -117,3 +117,71 @@ export const register=(formValues)=>{
   }
   }
 }
+
+export const getUserDetails=(id)=>{
+  return async (dispatch,getState)=>{
+    try{
+    dispatch({
+      type:"USER_DETAILS_REQUEST"
+    })
+
+    const {userLogin:{userInfo}}=getState();
+
+    const config={
+      headers:{
+        "Content-Type": "application/json",
+        Authorization:`Bearer ${userInfo.token}`
+      }
+    }
+
+    const response=await axios.get(`/api/users/${id}`,config);
+
+    dispatch({
+      type:"USER_DETAILS_SUCCESS",
+      payload:response.data
+    })
+
+  }
+  catch(error){
+    dispatch({
+      type:"USER_DETAILS_FAIL",
+      payload:error.response&& error.response.data.message
+      ? error.response.data.message :error.message
+    })
+  }
+  }
+}
+
+export const updateUserDetails=(user)=>{
+  return async (dispatch,getState)=>{
+    try{
+    dispatch({
+      type:"USER_UPDATE_REQUEST"
+    })
+
+    const {userLogin:{userInfo}}=getState();
+
+    const config={
+      headers:{
+        "Content-Type": "application/json",
+        Authorization:`Bearer ${userInfo.token}`
+      }
+    }
+
+    const response=await axios.put(`/api/users/profile`,user,config);
+
+    dispatch({
+      type:"USER_UPDATE_SUCCESS",
+      payload:response.data
+    })
+
+  }
+  catch(error){
+    dispatch({
+      type:"USER_UPDATE_FAIL",
+      payload:error.response&& error.response.data.message
+      ? error.response.data.message :error.message
+    })
+  }
+  }
+}
