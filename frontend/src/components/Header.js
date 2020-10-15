@@ -5,13 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../actions";
 
 function Header() {
-  const dispatch=useDispatch();
-  const userInfo=useSelector(state=>state.userLogin.userInfo);
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userLogin.userInfo);
 
-  const logOutHandler=()=>{
+  const logOutHandler = () => {
     dispatch(logOut());
-  }
-
+  };
 
   return (
     <header>
@@ -34,13 +33,22 @@ function Header() {
                   <i className="fas fa-shopping-cart"></i> Cart
                 </Nav.Link>
               </LinkContainer>
-              {userInfo ?
-                  <NavDropdown title={userInfo.name} id='username'><LinkContainer to='/profile'><NavDropdown.Item>Profile</NavDropdown.Item></LinkContainer>
-              <NavDropdown.Item onClick={logOutHandler}>LogOut</NavDropdown.Item></NavDropdown>:<LinkContainer to="/login">
-                <Nav.Link>
-                  <i className="fas fa-user"></i> Sign In
-                </Nav.Link>
-              </LinkContainer>}
+              {userInfo ? (
+                <NavDropdown title={userInfo.name} id="username">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logOutHandler}>
+                    LogOut
+                  </NavDropdown.Item>
+                </NavDropdown>
+              ) : (
+                <LinkContainer to="/login">
+                  <Nav.Link>
+                    <i className="fas fa-user"></i> Sign In
+                  </Nav.Link>
+                </LinkContainer>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

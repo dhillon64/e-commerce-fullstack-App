@@ -4,6 +4,7 @@ import Product from "../components/Product";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../actions";
 import Loader from "../components/Loader";
+import CarouselProducts from "../components/Carousel";
 
 function HomeScreen() {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ function HomeScreen() {
   return (
     <>
       <h1>Latest Products</h1>
+      <CarouselProducts />
       {products.length === 0 ? (
         <Loader />
       ) : (

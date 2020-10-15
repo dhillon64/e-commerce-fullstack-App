@@ -80,108 +80,290 @@ export const LogIn = (formValues) => {
   };
 };
 
-export const logOut=()=>{
+export const logOut = () => {
   localStorage.removeItem("userInfo");
-  return{
-    type:"LOGOUT"
-  }
-}
+  return {
+    type: "LOGOUT",
+  };
+};
 
-export const register=(formValues)=>{
-  return async (dispatch)=>{
-    try{
-    dispatch({
-      type:"REGISTER_REQUEST"
-    })
+export const register = (formValues) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "REGISTER_REQUEST",
+      });
 
-    const response=await axios.post('/api/users',formValues);
+      const response = await axios.post("/api/users", formValues);
 
-    dispatch({
-      type:"REGISTER_SUCCESS",
-      payload:response.data
-    })
+      dispatch({
+        type: "REGISTER_SUCCESS",
+        payload: response.data,
+      });
 
-    dispatch({
-      type:"LOGIN_SUCCESS",
-      payload:response.data
-    })
-    localStorage.setItem("userInfo", JSON.stringify(response.data));
-
-  }
-  catch(error){
-    dispatch({
-      type:'REGISTER_FAIL',
-      payload:error.response&& error.response.data.message
-      ? error.response.data.message :error.message
-    })
-  }
-  }
-}
-
-export const getUserDetails=(id)=>{
-  return async (dispatch,getState)=>{
-    try{
-    dispatch({
-      type:"USER_DETAILS_REQUEST"
-    })
-
-    const {userLogin:{userInfo}}=getState();
-
-    const config={
-      headers:{
-        "Content-Type": "application/json",
-        Authorization:`Bearer ${userInfo.token}`
-      }
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: response.data,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
+    } catch (error) {
+      dispatch({
+        type: "REGISTER_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
+  };
+};
 
-    const response=await axios.get(`/api/users/${id}`,config);
+export const getUserDetails = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: "USER_DETAILS_REQUEST",
+      });
 
-    dispatch({
-      type:"USER_DETAILS_SUCCESS",
-      payload:response.data
-    })
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-  }
-  catch(error){
-    dispatch({
-      type:"USER_DETAILS_FAIL",
-      payload:error.response&& error.response.data.message
-      ? error.response.data.message :error.message
-    })
-  }
-  }
-}
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-export const updateUserDetails=(user)=>{
-  return async (dispatch,getState)=>{
-    try{
-    dispatch({
-      type:"USER_UPDATE_REQUEST"
-    })
+      const response = await axios.get(`/api/users/${id}`, config);
 
-    const {userLogin:{userInfo}}=getState();
-
-    const config={
-      headers:{
-        "Content-Type": "application/json",
-        Authorization:`Bearer ${userInfo.token}`
-      }
+      dispatch({
+        type: "USER_DETAILS_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "USER_DETAILS_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
+  };
+};
 
-    const response=await axios.put(`/api/users/profile`,user,config);
+export const updateUserDetails = (user) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: "USER_UPDATE_REQUEST",
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const response = await axios.put("/api/users/profile", user, config);
+
+      dispatch({
+        type: "USER_UPDATE_SUCCESS",
+        payload: response.data,
+      });
+      localStorage.setItem("userInfo", JSON.stringify(response.data));
+    } catch (error) {
+      dispatch({
+        type: "USER_UPDATE_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
+
+export const saveShippingAddress = (values) => (dispatch) => {
+  dispatch({
+    type: "CART_SAVE_SHIPPING_ADDRESS",
+    payload: values,
+  });
+  localStorage.setItem("shippingAddress", JSON.stringify(values));
+};
+
+export const savePaymentMethod = (value) => (dispatch) => {
+  dispatch({
+    type: "CART_SAVE_PAYMENT_METHOD",
+    payload: value,
+  });
+  localStorage.setItem("paymentMethod", JSON.stringify(value));
+};
+
+export const createOrder = (values) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: "ORDER_CREATE_REQUEST",
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const { data } = await axios.post("/api/orders", values, config);
+
+      dispatch({
+        type: "ORDER_CREATE_SUCCESS",
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "ORDER_CREATE_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
+
+export const getOrderDetails = (id) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: "GET_ORDER_REQUEST",
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const response = await axios.get(`/api/orders/${id}`, config);
+
+      dispatch({
+        type: "GET_ORDER_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "GET_ORDER_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
+
+export const payOrder = (id, paymentResult) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: "ORDER_PAY_REQUEST",
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const response = await axios.put(
+        `/api/orders/${id}/pay`,
+        paymentResult,
+        config
+      );
+
+      dispatch({
+        type: "ORDER_PAY_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "ORDER_PAY_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
+
+export const getUserOrders = () => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: "ORDER_LIST_REQUEST",
+      });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+
+      const response = await axios.get("/api/orders/myorders", config);
+
+      dispatch({
+        type: "ORDER_LIST_SUCCESS",
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "ORDER_LIST_FAIL",
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
+};
+
+export const getTopProducts = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: "FETCH_TOP_PRODUCTS_REQUEST",
+    });
+
+    const response = await axios.get("/api/products/top/products");
 
     dispatch({
-      type:"USER_UPDATE_SUCCESS",
-      payload:response.data
-    })
-
-  }
-  catch(error){
-    dispatch({
-      type:"USER_UPDATE_FAIL",
-      payload:error.response&& error.response.data.message
-      ? error.response.data.message :error.message
-    })
-  }
-  }
-}
+      type: "FETCH_TOP_PRODUCTS_SUCCESS",
+      payload: response.data,
+    });
+  };
+};

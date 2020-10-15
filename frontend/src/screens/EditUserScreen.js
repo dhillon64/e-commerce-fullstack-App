@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Form,Button, Row,Col, Alert} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserDetails, updateUserDetails } from '../actions';
+import { updateUserDetails } from '../actions';
 import Loader from '../components/Loader';
 
 
@@ -14,26 +14,25 @@ const EditUserScreen=({location,history})=>{
     const [password,setPassword]=useState('');
     const dispatch=useDispatch();
     const userInfo=useSelector(state=>state.userLogin.userInfo);
-    const userDetails=useSelector(state=>state.userDetails);
-    const updateUser=useSelector(state=>state.updateUser);
-    const {success}=updateUser;
-    const {user,loading,error}=userDetails;
+    const loading=useSelector(state=>state.userLogin.loading);
+    const error=useSelector(state=>state.userLogin.error);
+    const success=useSelector(state=>state.userLogin.success);
+  
+    
+    
     
 
     useEffect(()=>{
         if(!userInfo){
           history.push('/login')
         }else{
-            if(!user.name){
-                dispatch(getUserDetails('profile'))
-            }
-            else{
+            
                 
-                setName(user.name);
-                setEmail(user.email)
-            }
+                setName(userInfo.name);
+                setEmail(userInfo.email)
+            
     }
-},[userInfo,history,dispatch,user]);
+},[userInfo,history,dispatch]);
 
     
     const handleSubmit=(e)=>{
@@ -42,7 +41,7 @@ const EditUserScreen=({location,history})=>{
           setMessage('Passwords do not match')
         }
         else{
-            dispatch(updateUserDetails({id:user._id,name,email,password}))
+            dispatch(updateUserDetails({id:userInfo._id,name,email,password}))
         }      
     }
 

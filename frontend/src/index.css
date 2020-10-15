@@ -1,5 +1,5 @@
 body {
-  background-image: url("./images/15803400-illustration-of-different-shopping-bag-on-sale-background.jpg");
+  background-image: url("./images/shoppingbags.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;
@@ -22,4 +22,30 @@ h2 {
 .navbarSizing {
   padding-bottom: 10px;
   padding-top: 10px;
+}
+
+.carousel {
+  height: 450px;
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 0;
+}
+
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+  display: flex;
+}
+
+.carousel img {
+  height: 400px;
+  padding: 30px;
+  margin: 40px;
+  border-radius: 10%;
+}
+
+.carousel a {
+  margin: 0 auto;
 }

@@ -1,4 +1,4 @@
-export default (state = { cartItems: [] }, action) => {
+export default (state = { cartItems: [],shippingAddress:{} }, action) => {
   switch (action.type) {
     case "CART_ADD_ITEM":
       const item = action.payload;
@@ -25,6 +25,18 @@ export default (state = { cartItems: [] }, action) => {
           ...state.cartItems.filter((item) => item.product !== action.payload),
         ],
       };
+
+      case "CART_SAVE_SHIPPING_ADDRESS":
+        return {
+          ...state,shippingAddress:action.payload
+        }
+
+        case "CART_SAVE_PAYMENT_METHOD":
+        return {
+          ...state,paymentMethod:action.payload
+        }
+
+
 
     default:
       return state;

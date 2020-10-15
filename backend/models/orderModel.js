@@ -29,7 +29,7 @@ const orderSchema = mongoose.Schema(
         type: String,
         required: true,
       },
-      postalCode: {
+      postCode: {
         type: String,
         required: true,
       },
@@ -56,11 +56,6 @@ const orderSchema = mongoose.Schema(
       email_address: {
         type: String,
       },
-    },
-    taxPrice: {
-      type: Number,
-      required: true,
-      default: 0.0,
     },
     shippingPrice: {
       type: Number,

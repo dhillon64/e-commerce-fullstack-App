@@ -17,3 +17,9 @@ export const getProduct = asyncHandler(async (req, res, next) => {
     return next(new HttpError("product not found", 404));
   }
 });
+
+export const getTopProducts = asyncHandler(async (req, res, next) => {
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.json(products);
+});
